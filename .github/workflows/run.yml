@@ -1,12 +1,11 @@
 name: 刷步数
-
 on:
-  #push:
-  #  branches: [ master ]
-  #pull_request:
-  #  branches: [ master ]
   schedule:
-     - cron: '2 23,2,5,8,11,14 * * *'
+    - cron: '12 4 * * *'   # 北京时间 12:12 中午
+    - cron: '37 6 * * *'   # 北京时间 14:37 下午
+    - cron: '8 8 * * *'    # 北京时间 16:08 下午
+    - cron: '43 8 * * *'   # 北京时间 16:43 下午
+    - cron: '21 9 * * *'   # 北京时间 17:21 傍晚（最后一班，留足6小时延迟余量，绝不跨零点）
   watch:
     types: started
   workflow_dispatch:
@@ -21,7 +20,6 @@ jobs:
         run: |
           sudo -E apt-get -qq update
           sudo -E apt-get install zsh -y
-          
       - name: 初始化Python
         uses: actions/setup-python@v5
         with:
