@@ -1,12 +1,8 @@
 name: 刷步数
 
 on:
-  #push:
-  #  branches: [ master ]
-  #pull_request:
-  #  branches: [ master ]
   schedule:
-     - cron: '7 23,2,5,8,11,14 * * *'
+     - cron: '0 6,8,10 * * *'
   watch:
     types: started
   workflow_dispatch:
