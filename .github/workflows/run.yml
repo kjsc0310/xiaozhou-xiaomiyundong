@@ -1,12 +1,10 @@
 name: 刷步数
-
+# ⚠️ 注意：这里的name必须和cron.yml里workflows数组里的名字完全一致，一个空格都不能差
 on:
   schedule:
-     - cron: '0 14,16,18 * * *'
-       timezone: Asia/Shanghai
-  watch:
-    types: started
-  workflow_dispatch:
+    # 对应北京时间 14点、16点、18点（下午2/4/6点），需要其他时间自己改前面的小时数（UTC小时=北京时间小时-8）
+    - cron: '0 6,8,10 * * *'
+  workflow_dispatch: # 保留手动触发功能
 
 jobs:
   build:
@@ -15,23 +13,24 @@ jobs:
       - name: Checkout codes
         uses: actions/checkout@v4
 
-      - name: 随机延时等待（0~3600秒，0-60分钟）
-        run: |
-          DELAY=$(( RANDOM % 3600 ))
-          echo "随机等待 ${DELAY} 秒后开始执行刷步"
-          sleep ${DELAY}
+      # 如果你已经用cron.yml随机分钟了，这个延时可以注释掉避免重复等待；想留着也不影响
+      # - name: 随机延时等待（0~3600秒，0-60分钟）
+      #   run: |
+      #     DELAY=$(( RANDOM % 3600 ))
+      #     echo "随机等待 ${DELAY} 秒后开始执行刷步"
+      #     sleep ${DELAY}
 
       - name: Update system and install zsh
         run: |
           sudo -E apt-get -qq update
           sudo -E apt-get install zsh -y
-          
+
       - name: 初始化Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          
-      - name: 开始
+
+      - name: 开始刷步
         env:
           CONFIG: ${{ secrets.CONFIG }}
         run: |
