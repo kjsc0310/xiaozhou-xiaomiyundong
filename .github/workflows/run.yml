@@ -2,7 +2,7 @@ name: 刷步数
 
 on:
   schedule:
-     - cron: '34 6,8,10 * * *'
+     - cron: '0 14,16,18 * * *'
   watch:
     types: started
   workflow_dispatch:
@@ -13,6 +13,13 @@ jobs:
     steps:
       - name: Checkout codes
         uses: actions/checkout@v4
+
+      - name: 随机延时等待（0~3600秒，0-60分钟）
+        run: |
+          DELAY=$(( RANDOM % 3600 ))
+          echo "随机等待 ${DELAY} 秒后开始执行刷步"
+          sleep ${DELAY}
+
       - name: Update system and install zsh
         run: |
           sudo -E apt-get -qq update
